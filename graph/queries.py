@@ -57,7 +57,7 @@ def get_id(name):
         #add exceptional handling 
         return None    
 
-def bfs_alt(start,end):
+def bfs(start,end):
     visited={}
     parent={}
     q=deque()
@@ -84,9 +84,17 @@ def bfs_alt(start,end):
                     q.append(id)
                     parent[id]=node
                     if(id==end): return parent 
+def get_path(actor_name):
+    end=get_id(actor_name)
+    parent=bfs("p102",end)
+    ret=[]
+    x=end
+    while x!=None:
+        ret.append(Node(x,cur).get_attr())
+        x=parent[x]
+    return ret
 
-        
-# parent=bfs_alt("p102","p1191")
+# parent=bfs("p102","p1191")
 
 # x="p1191"
 # while x!=None:
