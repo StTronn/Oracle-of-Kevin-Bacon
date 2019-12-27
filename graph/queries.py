@@ -1,5 +1,9 @@
 from collections import deque
 import sqlite3
+import sys 
+
+conn =sqlite3.connect("movies.db",check_same_thread=False)
+cur=conn.cursor()
 
 class Movie():
     def __init__(self,id,cur):
@@ -44,8 +48,6 @@ class Node():
     def get_attr(self):
         return self.obj.get_attr()
     
-conn =sqlite3.connect("movies.db")
-cur=conn.cursor()
 
 
 def get_id(name):
@@ -54,7 +56,7 @@ def get_id(name):
     if ret!=None:
         return ret[0]
     else:
-        #add exceptional handling 
+        #add exception handling 
         return None    
 
 def bfs(start,end):
@@ -86,14 +88,25 @@ def bfs(start,end):
                     if(id==end): return parent 
 def get_path(actor_name):
     end=get_id(actor_name)
-    parent=bfs("p102",end)
     ret=[]
+    if end==None:
+        return ret
+    parent=bfs("p102",end)
     x=end
     while x!=None:
         ret.append(Node(x,cur).get_attr())
         x=parent[x]
     return ret
 
+if __name__ == "__main__":
+    if len(sys.argv)==1:
+        print ("please specify the actor name")
+    s=""
+    for word in sys.argv[1:]:
+        s+=" "+word
+    s=s[1:]
+    print(get_path(s))
+    
 # parent=bfs("p102","p1191")
 
 # x="p1191"
@@ -114,5 +127,3 @@ def get_path(actor_name):
 # while x!=None:
 #     print(Node(x,cur).get_attr())
 #     x=parent[x]
-conn.commit()
-conn.close()

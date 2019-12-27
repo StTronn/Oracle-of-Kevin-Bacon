@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+        <title>Todo</title>
+    </head>
+    <body>
+        <div id="app"></div>
+        <script type="text/babel">
+
+            class App extends React.Component {
+
+                constructor(props) {
+                    super(props);
+                    this.state = {
+                        path: [],
+                        input: ""
+                    };
+                }
+
+                render() {
+                    let path=this.state.path;
+                    return (
+                        <div>
+                            <h1>Oracle of Bacon</h1>
+                            <input onChange={this.handleChange} value={this.state.input} />
+                            <button onClick={this.getPath}>Add Task</button>
+                            <br/>
+                            <ul>
+
+                            {path.length!==0 &&
+                                path.map((obj,index)=>
+                                    <li key={index} className={obj.type}>{obj.name}</li>
+                                )
+                            }
+                            </ul>
+                        </div>
+                    );
+                }
+
+                handleChange = (event) => {
+                    this.setState({
+                        input: event.target.value
+                    });
+                }
+
+                get_path= () => {
+                fetch('http://127.0.0.1:5000/api/'+this.state.input)
+                .then(response=>response.json)
+                .then(result=> this.setState(result))
+                .catch(error=>{console.log(error);})
+                }
+            }
+
+            ReactDOM.render(<App />, document.querySelector("#app"));
+
+        </script>
+    </body>
+</html>

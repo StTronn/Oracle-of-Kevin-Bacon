@@ -6,5 +6,5 @@ app = Flask(__name__)
 def show_path(actor_name):
     ret=queries.get_path(actor_name)
     return {
-        "list":ret
+        "path":ret,
     }    
